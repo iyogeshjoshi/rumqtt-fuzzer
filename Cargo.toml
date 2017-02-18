@@ -1,0 +1,14 @@
+[package]
+name = "rumqtt-fuzzer"
+version = "0.1.0"
+authors = ["Rahul Sharma <rsconceptx@gmail.com>"]
+
+[dependencies]
+rand = "*"
+slog = "*"
+slog-stream = "*"
+slog-stdlog = "*"
+log = "*"
+
+[dependencies.rumqtt]
+path = "../RuMqtt"
