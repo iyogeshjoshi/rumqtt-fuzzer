@@ -1,3 +1,4 @@
+#![feature(integer_atomics)] 
 
 //! This library aims to create a test harness for mqttclients, which tries to simulate arbitrary packets
 //! along side allowing user defined topic for publish and subscribes coupled with logging of messages on user defined callbacks

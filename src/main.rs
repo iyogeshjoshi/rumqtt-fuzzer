@@ -3,8 +3,8 @@ extern crate slog;
 
 use rumqtt_fuzzer::{Fuzzer, MqHarness};
 
-const BROKER: &'static str = "localhost:1883";
-
+const LOCAL_BROKER: &'static str = "localhost:1883";
+const BROKER: &'static str = "dev-mqtt-broker.atherengineering.in:1883";
 /*
 
 Goals of the mqtt_fuzzer -
@@ -19,6 +19,7 @@ Implementation thoughts: It can be a cmd line tool with docopt style args or jus
 */
 
 fn main() {
-	let pack = Fuzzer::make_packet(25);
-	MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 1000, None, "big_publish_alot.log", BROKER);
+	let pack = Fuzzer::make_packet(1);
+	/*MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);*/
+	MqHarness::spawn_pubacks_test("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);
 }
