@@ -4,11 +4,9 @@ version = "0.1.0"
 authors = ["Rahul Sharma <rsconceptx@gmail.com>"]
 
 [dependencies]
+log = "*"
 rand = "*"
+rumqtt = { git = "https://github.com/Ather-Energy/rumqtt", branch="v0.10" }
 slog = "*"
 slog-stream = "*"
 slog-stdlog = "*"
-log = "*"
-
-[dependencies.rumqtt]
-path = "../RuMqtt"

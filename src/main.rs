@@ -19,7 +19,17 @@ Implementation thoughts: It can be a cmd line tool with docopt style args or jus
 */
 
 fn main() {
-	let pack = Fuzzer::make_packet(1);
-	/*MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);*/
-	MqHarness::spawn_pubacks_test("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);
+	let pack = Fuzzer::make_packet(50);
+	// Publish Subscribe callbacks test
+
+	//MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);
+	
+	// Publish Ack test
+
+	//MqHarness::spawn_pubacks_test("test/big/qos1/stress", pack, 100000, None, "big_publish_alot.log", BROKER);
+
+	// Userdata publish test
+	let userdata = b"arandommqttuser:sekretpassword".to_vec();
+	let pack = Fuzzer::make_packet(50);
+	MqHarness::spawn_userdata_publish_test("test/big/qos1/stress", pack, 10000, None, "big_publish_alot.log", BROKER, userdata);
 }
