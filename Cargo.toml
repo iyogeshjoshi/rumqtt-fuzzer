@@ -1,5 +1,5 @@
 [package]
-name = "rumqtt-fuzzer"
+name = "rumqtt_fuzzer"
 version = "0.1.0"
 authors = ["Rahul Sharma <rsconceptx@gmail.com>"]
 
@@ -11,4 +11,4 @@ slog-stdlog = "*"
 log = "*"
 
 [dependencies.rumqtt]
-path = "../RuMqtt"
+path = "../rumqtt"

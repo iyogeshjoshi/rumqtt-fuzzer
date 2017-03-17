@@ -12,7 +12,6 @@ use slog::DrainExt;
 use slog_stream;
 use slog;
 
-use std::sync::atomic::AtomicU64;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::thread;
@@ -28,7 +27,7 @@ impl MqHarness {
 							   log_path: Option<&str>,
 							   file_name: &str, 
 							   broker: &str) {
-		let count = Arc::new(AtomicU64::new(0));
+		let count = Arc::new(AtomicUsize::new(0));
 		let recv_cnt = count.clone();
 		let log_path = Path::new(file_name);
 		let file = OpenOptions::new()
@@ -39,7 +38,7 @@ impl MqHarness {
 
 		// Set slog to use MqHarness as the Format implementation
 		let drain = slog_stream::stream(file, MqHarness).fuse();
-		let drain = slog::level_filter(slog::Level::Info, drain);
+		// let drain = slog::level_filter(slog::Level::Debug, drain);
 		let logger = slog::Logger::root(drain, o!());
 		set_logger(logger).unwrap();
 
@@ -58,13 +57,13 @@ impl MqHarness {
 
 	    let mq_cb = MqttCallback::new().on_message(callback);
 	    let mut mq_client = MqttClient::start(client_options, Some(mq_cb)).expect("Couldn't start");
-	    let sub = vec![(topic, QoS::Level1)];
+	    let sub = vec![(topic, QoS::AtLeastOnce)];
 
 	    let mut send_cnt = 0;
 
 	    mq_client.subscribe(sub).expect("Subscription failure");
 	    for _ in 0..npack {
-	    	match mq_client.publish(topic, QoS::Level1, pack.clone()) {
+	    	match mq_client.publish(topic, QoS::AtLeastOnce, pack.clone()) {
 	    		Ok(_) => {send_cnt+=1;}
 	    		Err(e) => {
 	    			error!("{:?}", e);
@@ -86,7 +85,7 @@ impl MqHarness {
 							   log_path: Option<&str>,
 							   file_name: &str, 
 							   broker: &str) {
-		let count = Arc::new(AtomicU64::new(0));
+		let count = Arc::new(AtomicUsize::new(0));
 		let recv_cnt = count.clone();
 		let log_path = Path::new(file_name);
 		let file = OpenOptions::new()
@@ -113,10 +112,13 @@ impl MqHarness {
 
 	    let mq_cb = MqttCallback::new().on_publish(callback);
 	    let mut mq_client = MqttClient::start(client_options, Some(mq_cb)).expect("Couldn't start");
-	    let sub = vec![(topic, QoS::Level1)];
-	    let mut send_cnt = 0;
+
+		let topics = vec![("test/basic", QoS::AtMostOnce)];
+    	mq_client.subscribe(topics).expect("Subcription failure");
+	    
+		let mut send_cnt = 0;
 	    for _ in 0..npack {
-	    	match mq_client.publish(topic, QoS::Level1, pack.clone()) {
+	    	match mq_client.publish(topic, QoS::AtLeastOnce, pack.clone()) {
 	    		Ok(_) => {send_cnt+=1;}
 	    		Err(e) => {
 	    			error!("{:?}", e);
@@ -136,6 +138,7 @@ impl Fuzzer {
 		let big_payload: String = rand::thread_rng().gen_ascii_chars()
             										.take(kbs * 1024)
             										.collect();
+		println!("{:?}", big_payload.len());
         big_payload.into_bytes()
 	}
 }
