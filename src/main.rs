@@ -34,5 +34,6 @@ Implementation thoughts: It can be a cmd line tool with docopt style args or jus
 fn main() {
 	let pack = Fuzzer::make_packet(100);
 	/*MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 500, None, "big_publish_alot.log", BROKER);*/
-	MqHarness::spawn_pubacks_test("test/big/qos1/stress", pack, 1000, None, "big_publish_alot.log", BROKER);
+	// MqHarness::spawn_pubacks_test("test/big/qos1/stress", pack, 1000, None, "big_publish_alot.log", BROKER);
+	MqHarness::spawn_pub_sub_with_pack("test/big/qos1/stress", pack, 1000, None, "big_publish_alot.log", BROKER);
 }

@@ -38,7 +38,7 @@ impl MqHarness {
 
 		// Set slog to use MqHarness as the Format implementation
 		let drain = slog_stream::stream(file, MqHarness).fuse();
-		// let drain = slog::level_filter(slog::Level::Debug, drain);
+		let drain = slog::level_filter(slog::Level::Info, drain);
 		let logger = slog::Logger::root(drain, o!());
 		set_logger(logger).unwrap();
 
