@@ -6,6 +6,7 @@
 
 extern crate rand;
 extern crate rumqtt;
+extern crate mqtt;
 #[macro_use]
 extern crate slog;
 extern crate slog_stream;
