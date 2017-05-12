@@ -6,7 +6,8 @@ authors = ["Rahul Sharma <rsconceptx@gmail.com>"]
 [dependencies]
 log = "*"
 rand = "*"
-rumqtt = { git = "https://github.com/Ather-Energy/rumqtt", branch="v0.10" }
-slog = "*"
-slog-stream = "*"
-slog-stdlog = "*"
+mqtt-protocol = "0.3"
+rumqtt = {git="https://github.com/AtherEnergy/rumqtt", branch="v0.10" }
+slog = "1"
+slog-stream = "1"
+slog-stdlog = "1"
